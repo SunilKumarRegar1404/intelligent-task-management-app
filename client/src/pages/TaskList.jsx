@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TaskCard from '../components/TaskCard';
 import { useUser } from '@clerk/clerk-react';
+import socket from '../config/socket';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -22,6 +23,19 @@ const TaskList = () => {
     };
 
     fetchTask();
+
+     // Listen for 'taskUpdated' events from the server
+     socket.on('taskUpdated', (updatedTask) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task._id === updatedTask._id ? updatedTask : task))
+      );
+    });
+
+    // Clean up socket listener when component unmounts
+    return () => {
+      socket.off('taskUpdated');
+    };
+
   }, []);
 
   const handleDelete = (id) => {

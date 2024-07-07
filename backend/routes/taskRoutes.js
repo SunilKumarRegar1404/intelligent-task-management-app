@@ -2,6 +2,9 @@
 const express = require('express');
 const Task = require('../models/Task');
 const router = express.Router();
+const { Server } = require("socket.io");
+const io = require('../server');
+
 
 // Get all tasks of user by userid
 router.get('/', async (req, res) => {
@@ -58,6 +61,10 @@ router.put('/:id', async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
+
+    // Emit taskUpdated event to all connected clients
+    io.emit('taskUpdated', task);
+
     res.json(task);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -76,5 +83,23 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+//Add Collaborator
+router.post('/addCollaborator/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const { userId, role } = req.body;
+
+  try {
+    const task = await Task.findById(taskId);
+    if (!task) return res.status(404).json({ message: 'Task not found' });
+
+    task.collaborators.push({ userId, role });
+    await task.save();
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 module.exports = router;

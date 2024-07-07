@@ -8,6 +8,12 @@ const taskSchema = new mongoose.Schema({
   priority: { type: String, required: true },
   status: { type: String, required: true },
   userId: {type:String, required:true},
+  collaborators: [
+    {
+      userId: String,
+      role: { type: String, enum: ['editor', 'viewer'] }
+    }
+  ]
 });
 
 module.exports = mongoose.model('Task', taskSchema);

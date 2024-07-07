@@ -44,6 +44,7 @@ const UpdateTask = () => {
         priority,
         status,
         userId: user.id,
+        
       });
       console.log('Task updated successfully');
       navigate('/tasks'); // Redirect to the tasks list after updating

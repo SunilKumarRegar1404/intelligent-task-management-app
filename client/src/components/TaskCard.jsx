@@ -1,10 +1,15 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useUser } from '@clerk/clerk-react';
 
-export default function TaskCard({ _id, title, description, dueDate, priority, status, onDelete }){
 
-  const navigate=useNavigate();
+export default function TaskCard({ _id, userId, title, description, dueDate, priority, status, collaborators, onDelete }){
+  
+  const {user}=useUser();
+  const isCollaborator = collaborators.some(collab => collab.userId === user.id);
+  const isCreator = userId === user.id;
+
 
   const handleDelete = async () => {
     try {
@@ -23,8 +28,16 @@ export default function TaskCard({ _id, title, description, dueDate, priority, s
             <p className='text-yellow-200'>Due: {new Date(dueDate).toLocaleDateString()}</p>
             <p className='text-green-200'>Priority: {priority}</p>
             <p className='text-red-300 mb-4'>Status: {status}</p>
-            <Link to={`update/${_id}`} className='text-white text-xs border-2  border-green-400 mt-2  rounded-full px-4 mr-2 py-2 transition duration-300'>Update</Link>
-            <Link onClick={(e)=>{handleDelete(_id)}} className='text-white text-xs border-2  border-red-500 mt-2  rounded-full px-4 py-2 transition duration-300'>Delete</Link>
+            
+            {isCreator &&(
+              <>
+                <Link to={`update/${_id}`} className='text-white text-xs border-2  border-green-400 mt-2  rounded-full px-4 mr-2 py-2 transition duration-300'>Update</Link>
+                <Link onClick={(e)=>{handleDelete(_id)}} className='text-white text-xs border-2  border-red-500 mt-2  rounded-full px-4 py-2 transition duration-300'>Delete</Link>
+              </>
+            )}
+            {isCollaborator && !isCreator &&(
+              <Link to={`update/${_id}`} className='text-white text-xs border-2  border-green-400 mt-2  rounded-full px-4 mr-2 py-2 transition duration-300'>Update</Link>
+            )}
     </div>
   )
 }
