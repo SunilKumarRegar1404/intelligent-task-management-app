@@ -14,11 +14,11 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks', {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_BASE_PATH}/api/tasks`, {
           params: { userId: user.id },
         });
         setTasks(response.data);
-        console.log('Fetched tasks for user ID:', user.id);
+        console.log('Fetched tasks for current user!');
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }

@@ -8,7 +8,7 @@ export default function TaskCard({ _id, title, description, dueDate, priority, s
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${_id}`);
+      await axios.delete(`${import.meta.env.VITE_SERVER_BASE_PATH}/api/tasks/${_id}`);
       onDelete(); // Call the onDelete prop to update the parent component state
       console.log('Task deleted successfully');
     } catch (error) {

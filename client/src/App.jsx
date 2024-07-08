@@ -1,12 +1,10 @@
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
+import React, {useState } from 'react';
 import Navbar from "./components/Navbar";
 import { Outlet } from "react-router-dom";
 
 
 
-const socket = io('http://localhost:4000');
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -14,45 +12,7 @@ function App() {
   const {user}=useUser();
 
  
-
-  // useEffect(() => {
-  //   socket.on('loadTasks', (tasks) => {
-  //     setTasks(tasks);
-  //   });
-
-  //   return () => {
-  //     socket.off('loadTasks');
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     socket.emit('loadTasks', user.id);
-  //   }
-
-  //   socket.on('loadTasks', (tasks) => {
-  //     setTasks(tasks);
-  //   });
-
-  //   return () => {
-  //     socket.off('loadTasks');
-  //   };
-  // }, [user]);
-
-  // const addTask = () => {
-  //   if (task) {
-  //     socket.emit('newTask', { id: tasks.length + 1, task });
-  //     setTask('');
-  //   }
-  // };
-
-  // const addTask = () => {
-  //   if (task && user) {
-  //     socket.emit('newTask', { userId: user.id, task });
-  //     setTask('');
-  //   }
-  // };
-
+ 
   return (
     <div className="container h-[100vh] overflow-hidden w-full flex justify-center bg-slate-900">
       <SignedOut>

@@ -19,7 +19,7 @@ const Profile = () => {
   }
 
   if (isSignedIn) {
-    console.log(user.id);
+    console.log("user signed in!");
     return (
       <div className='h-full w-full flex justify-center text-center relative top-[20%]'>
           <SignedIn>

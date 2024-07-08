@@ -18,14 +18,14 @@ const UpdateTask = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tasks/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_BASE_PATH}/api/tasks/${id}`);
         const task = response.data;
         setTitle(task.title);
         setDescription(task.description);
         setDueDate(task.dueDate);
         setPriority(task.priority);
         setStatus(task.status);
-        console.log('Fetched task:', task);
+        console.log('Task Fetched!');
       } catch (error) {
         console.error('Error fetching task:', error);
       }
@@ -37,7 +37,7 @@ const UpdateTask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/tasks/${id}`, {
+      await axios.put(`${import.meta.env.VITE_SERVER_BASE_PATH}/api/tasks/${id}`, {
         title,
         description,
         dueDate,
