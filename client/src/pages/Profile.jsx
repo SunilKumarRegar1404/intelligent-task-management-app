@@ -14,7 +14,7 @@ const Profile = () => {
 
     
      if (!isLoaded) {
-    // Handle loading state however you like
+    // Handle loading state if user not loaded
     return <div className="text-2xl text-blue-500 font-bold mb-4">Loading...</div>;
   }
 
@@ -25,16 +25,17 @@ const Profile = () => {
           <SignedIn>
               <span>
           <h1 className="text-2xl text-blue-400 font-bold mb-2">HELLO, {user.firstName}!</h1>
-          <img src={user.imageUrl} className='h-[20vh] w-[20vh] rounded-full m-4 border-2 border-yellow-700  '/>
-
-          {/* <UserButton/> */}
+          
+          <span className='flex items-center'>
+          <img src={user.imageUrl} className='h-[20vh] w-[20vh] rounded-full m-4 border-2 border-yellow-500  '/>
 
           <button
       onClick={handleLogout}
       className="text-white text-2xl border-2  border-blue-400 mt-2  rounded-full px-4 py-2 transition duration-300"
-    >
+      >
       Logout
     </button>
+      </span>
               </span>
           </SignedIn>
       </div>

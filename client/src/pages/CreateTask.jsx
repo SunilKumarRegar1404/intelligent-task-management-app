@@ -10,7 +10,7 @@ const CreateTask = () => {
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('');
   const [status, setStatus] = useState('');
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user} = useUser();
 
   const navigate=useNavigate();
 

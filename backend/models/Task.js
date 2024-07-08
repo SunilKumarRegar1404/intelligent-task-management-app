@@ -1,4 +1,4 @@
-// backend/src/models/Task.js
+// backend/models/Task.js
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
