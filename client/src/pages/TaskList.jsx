@@ -17,6 +17,7 @@ const TaskList = () => {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_BASE_PATH}/api/tasks`, {
           params: { userId: user.id },
         });
+        console.log(response.data);
         setTasks(response.data);
         console.log('Fetched tasks for current user!');
       } catch (error) {

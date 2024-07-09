@@ -2,6 +2,7 @@
 const express = require('express');
 const Task = require('../models/Task');
 const router = express.Router();
+const {clerkClient}=require('@clerk/clerk-sdk-node')
 
 // Get all tasks of user by userid
 router.get('/', async (req, res) => {
@@ -12,9 +13,21 @@ router.get('/', async (req, res) => {
   }
   try {
     const tasks = await Task.find({ userId });
+    console.log(tasks);
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+// Get all users
+router.get('/getUsers', async (req, res) => {
+
+  try {
+    const users = await clerkClient.users.getUserList();
+    console.log(users);
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ "error fetching users": err.message });
   }
 });
 
@@ -53,11 +66,16 @@ router.get('/:id', async (req, res) => {
 
 // Update a task
 router.put('/:id', async (req, res) => {
+  const io=req.app.get('socketio');
+
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
+
+    io.emit('taskUpdated',task);//To emit task update to all connected sockets
+
     res.json(task);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -71,10 +89,38 @@ router.delete('/:id', async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
+
+    io.emit('taskDeleted',task._id);
+
     res.json({ message: 'Task deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+// // Add a collaborator to a task
+// router.post('/:id/collaborators', async (req, res) => {
+//   const { userId, role } = req.body;
+//   const io = req.app.get('socketio');
+
+//   try {
+//     const task = await Task.findById(req.params.id);
+//     if (!task) return res.status(404).json({ message: 'Task not found' });
+
+//     if (task.collaborators.some(collab => collab.userId === userId)) {
+//       return res.status(400).json({ message: 'User already a collaborator' });
+//     }
+
+//     task.collaborators.push({ userId, role });
+//     await task.save();
+
+//     io.emit('collaboratorAdded', { taskId: task._id, collaborator: { userId, role } }); // Emit collaborator added event
+
+//     res.status(201).json(task);
+//   } catch (err) {
+//     res.status(400).json({ message: err.message });
+//   }
+// });
 
 module.exports = router;

@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import socket from '../config/socket'
 
 const UpdateTask = () => {
   const [title, setTitle] = useState('');
@@ -11,6 +12,8 @@ const UpdateTask = () => {
   const [priority, setPriority] = useState('');
   const [status, setStatus] = useState('');
   const { isSignedIn, user, isLoaded } = useUser();
+  const [newCollaborator, setNewCollaborator] = useState('');
+  const [role, setRole] = useState('');
 
   const navigate=useNavigate();
   const {id}=useParams();
@@ -108,6 +111,31 @@ const UpdateTask = () => {
               <option value="Not Started">Not Started</option>
               <option value="In Progress">In Progress</option>
               <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <label className="block mb-2">Add Collaborator</label>
+          <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="px-3 py-2 outline-none rounded-md bg-slate-900  border-2 border-blue-400"
+            >
+              <option value="">Add Collab</option>
+              <option value="Not Started">Not Started</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <label className="block mb-2">Status</label>
+          <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="px-3 py-2 outline-none rounded-md bg-slate-900  border-2 border-blue-400"
+            >
+              <option value="">Select Role</option>
+              <option value="Not Started">Editor</option>
+              <option value="In Progress">Viewer</option>
             </select>
         </div>
         

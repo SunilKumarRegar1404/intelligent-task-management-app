@@ -1,5 +1,5 @@
 // frontend/src/pages/CreateTask.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
@@ -10,9 +10,34 @@ const CreateTask = () => {
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('');
   const [status, setStatus] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [newCollaborator, setNewCollaborator] = useState('');
+  const [role, setRole] = useState('');
   const { user} = useUser();
-
   const navigate=useNavigate();
+
+
+
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get('https://api.clerk.com/v1/users', {
+  //         headers: {
+  //           'Authorization': `Bearer ${API_KEY}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  //       setUserList(response.data);
+  //       console.log(userList);
+  //     } catch (error) {
+  //       console.error('Error fetching users:', error);
+  //     }
+  //   };
+
+  //   fetchUsers();
+  // }, []);
+  
+ 
 
   const handleSubmit = async (e) => {
     
@@ -95,6 +120,31 @@ const CreateTask = () => {
               <option value="Not Started">Not Started</option>
               <option value="In Progress">In Progress</option>  
               <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <label className="block mb-2">Add Collaborator</label>
+          <select
+              value={status}
+              onChange={(e) => setNewCollaborator(e.target.value)}
+              className="px-3 py-2 outline-none rounded-md bg-slate-900  border-2 border-blue-400"
+            >
+              <option value="">Add Collab</option>
+              <option value="Not Started">Not Started</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <label className="block mb-2">Status</label>
+          <select
+              value={status}
+              onChange={(e) => setRole(e.target.value)}
+              className="px-3 py-2 outline-none rounded-md bg-slate-900  border-2 border-blue-400"
+            >
+              <option value="">Select Role</option>
+              <option value="Not Started">Editor</option>
+              <option value="In Progress">Viewer</option>
             </select>
         </div>
         
